@@ -103,7 +103,8 @@ class Game extends React.Component {
       const history = this.state.history;
       const current = history[this.state.stepNumber];
       const winner = calculateWinner(current.squares);
-
+      const catsScratch = detectCatsScratch(current.squares);
+      
       const moves = history.map((step, move) => {
         const desc = move ?
         'Go to move #' + move :
@@ -119,9 +120,13 @@ class Game extends React.Component {
 
       if(winner){
         status = 'Winner: ' + winner;
+      }else if(catsScratch){
+        status = 'Cat Scratch!';
       }else{
         status = 'Next player: '+(this.state.xIsNext ? 'X' : 'O');
       }
+
+     
 
       return (
        <div className="game">
@@ -147,6 +152,19 @@ class Game extends React.Component {
     document.getElementById('root')
   );
   
+  function detectCatsScratch(squares)
+  {
+    for(let i=0; i < squares.length; i++){
+      if(squares[i] == null){
+          // checkes to see any unoccupied space.
+          return false;
+      }
+    }
+
+    return true;
+
+  }
+
   function calculateWinner(squares){
     const lines = [
       [0, 1, 2],
